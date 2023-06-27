@@ -1,6 +1,8 @@
+
+// Client Code
 using System.Collections;
+using RiptideNetworking;
 using System.Collections.Generic;
-using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -25,12 +27,33 @@ public class UIManager : MonoBehaviour
     }
 
     [Header("Connect")]
-
     [SerializeField] private GameObject connectUI;
     [SerializeField] private InputField usernameField;
 
     private void Awake()
     {
         Singleton = this;
+    }
+
+    public void ConnectClicked()
+    {
+        usernameField.interactable = false;
+        connectUI.SetActive(false);
+
+        NetworkManager.Singleton.Connect();
+    }
+
+    public void BackToMain()
+    {
+        usernameField.interactable = true;
+        connectUI.SetActive(true);
+    }
+
+    public void SendName()
+    {
+        Message message = Message.Create(MessageSendMode.reliable, (ushort)ClientToServerId.name);
+        message.AddString(usernameField.text);
+        NetworkManager.Singleton.Client.Send(message);
+
     }
 }
