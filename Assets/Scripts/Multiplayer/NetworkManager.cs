@@ -6,6 +6,11 @@ using RiptideNetworking.Utils;
 using System;
 using UnityEngine;
 
+public enum ServerToClientId : ushort
+{
+    playerSpawned = 1,
+}
+
 public enum ClientToServerId : ushort
 {
     name = 1,
