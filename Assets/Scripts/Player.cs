@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
     public bool IsLocal { get; private set; }
 
     [SerializeField] private Transform camTransform;
+    [SerializeField] private PlayerAnimationManager animationManager;
 
     private string username;
 
@@ -28,6 +29,7 @@ public class Player : MonoBehaviour
         if (!IsLocal)
         {
             camTransform.forward = forward;
+            animationManager.AnimateBasedOnSpeed();
         }
     }
 
