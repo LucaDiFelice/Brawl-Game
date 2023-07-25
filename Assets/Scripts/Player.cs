@@ -4,16 +4,27 @@ using RiptideNetworking;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum Team : byte
+{
+    none,
+    green,
+    orange
+}
+
 public class Player : MonoBehaviour
 {
     public static Dictionary<ushort, Player> list = new Dictionary<ushort, Player>();
 
     public ushort Id { get; private set; }
-
     public bool IsLocal { get; private set; }
+    public bool IsAlive => health > 0f;
+    public WeaponManager WeaponManager => WeaponManager;
 
+    [SerializeField] private float maxHealth;
+    [SerializeField] private GameObject model;
     [SerializeField] private Transform camTransform;
     [SerializeField] private PlayerAnimationManager animationManager;
+    [SerializeField] private Transform camTransform;
 
     private string username;
 
