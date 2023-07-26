@@ -59,10 +59,20 @@ public class Player : MonoBehaviour
         transform.position = newPosition;
 
         if (!IsLocal)
-        {
             camTransform.forward = forward;
-            animationManager.AnimateBasedOnSpeed();
-        }
+
+        animationManager.AnimateBasedOnSpeed();
+    }
+
+    public void SetHealth(float amount)
+    {
+        health = Mathf.Clamp(amount, 0f, maxHealth);
+        UIManager.Singleton.HealthUpdated(health, maxHealth, true);
+    }
+
+    public void Died(Vector3 position)
+    {
+
     }
 
     public static void Spawn(ushort id, string username, Vector3 position)
