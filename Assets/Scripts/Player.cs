@@ -22,11 +22,32 @@ public class Player : MonoBehaviour
 
     [SerializeField] private float maxHealth;
     [SerializeField] private GameObject model;
-    [SerializeField] private Transform camTransform;
+    [SerializeField] private MeshRenderer headband;
+    [SerializeField] private WeaponManager weaponManager;
     [SerializeField] private PlayerAnimationManager animationManager;
     [SerializeField] private Transform camTransform;
 
+    [Header("Team Colours")]
+    [SerializeField] private Material none;
+    [SerializeField] private Material green;
+    [SerializeField] private Material orange;
+
     private string username;
+    private float health;
+
+    private void OnValidate()
+    {
+        if (weaponManager == null)
+            weaponManager = GetComponent<WeaponManager>();
+        if (animationManager == null)
+            animationManager = GetComponent<PlayerAnimationManager>();
+    }
+
+    private void Start()
+    {
+        health = maxHealth;
+        DontDestroyOnLoad(gameObject);
+    }
 
     private void OnDestroy()
     {
