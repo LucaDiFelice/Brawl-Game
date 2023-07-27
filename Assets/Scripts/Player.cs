@@ -72,7 +72,13 @@ public class Player : MonoBehaviour
 
     public void Died(Vector3 position)
     {
+        transform.position = position;
+        health = 0f;
+        model.SetActive(false);
+        weaponManager.DisableWeapons();
 
+        if (IsLocal)
+            UIManager.Singleton.HealthUpdated(health, maxHealth, true);
     }
 
     public static void Spawn(ushort id, string username, Vector3 position)
@@ -92,6 +98,23 @@ public class Player : MonoBehaviour
         player.username = $"Player {id} ({(string.IsNullOrEmpty(username) ? "Guest" : username)})";
         player.Id = id;
         player.username = username;
+
+        list.Add(id, player);
+
+        switch (team)
+        {
+            case Team.none:
+                player.headband.material = player.none;
+                break;
+            case Team.green:
+                player.headband.material = player.green;
+                break;
+            case Team.orange:
+                player.headband.material = player.orange;
+                break;
+            default:
+                break;
+        }
 
         list.Add(id, player);
     }
