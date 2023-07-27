@@ -119,19 +119,63 @@ public class Player : MonoBehaviour
         list.Add(id, player);
     }
 
-    [MessageHandler((ushort)ServerToClientId.playerSpawned)]
+    [MessageHandler((ushort)ServerToClientId.activeScene)]
+    private static void ActiveScene(Message message)
+    {
+        GameLogic.Singleton.LoadScene(message.GetByte());
+    }
 
+    [MessageHandler((ushort)ServerToClientId.playerSpawned)]
     private static void SpawnPlayer(Message message)
     {
-        Spawn(message.GetUShort(), message.GetString(), message.GetVector3());
+        Spawn(message.GetUShort(), message.GetString(), (Team)message.GetByte(), message.GetVector3());
     }
 
     [MessageHandler((ushort)ServerToClientId.playerMovement)]
-
     private static void PlayerMovement(Message message)
     {
         if (list.TryGetValue(message.GetUShort(), out Player player))
             player.Move(message.GetVector3(), message.GetVector3());
+    }
+
+    [MessageHandler((ushort)ServerToClientId.playerHealthChanged)]
+    private static void PlayerHealthChanged(Message message)
+    {
+        if (list.TryGetValue(NetworkManager.Singleton.Client.Id, out Player player))
+            player.SetHealth(message.GetFloat());
+    }
+
+    [MessageHandler((ushort)ServerToClientId.playerActiveWeaponUpdated)]
+    private static void PlayerActiveWeaponUpdated(Message message)
+    {
+        if (list.TryGetValue(message.GetUShort(), out Player player))
+        {
+            WeaponType newType = (WeaponType)message.GetByte();
+            player.WeaponManager.SetWeaponActive(newType);
+
+            if (player.IsLocal)
+                UIManager.Singleton.ActiveWeaponUpdated(newType);
+        }
+    }
+
+    [MessageHandler((ushort)ServerToClientId.playerAmmoChanged)]
+    private static void PlayerAmmoChanged(Message message)
+    {
+        UIManager.Singleton.AmmoUpdated((WeaponType)message.GetByte(), message.GetByte(), message.GetUShort());
+    }
+
+    [MessageHandler((ushort)ServerToClientId.playerDied)]
+    private static void PlayerDied(Message message)
+    {
+        if (list.TryGetValue(message.GetUShort(), out Player player))
+            player.Died(message.GetVector3());
+    }
+
+    [MessageHandler((ushort)ServerToClientId.playerRespawned)]
+    private static void PlayerRespawned(Message message)
+    {
+        if (list.TryGetValue(message.GetUShort(), out Player player))
+            player.Respawned(message.GetVector3());
     }
 }
 
