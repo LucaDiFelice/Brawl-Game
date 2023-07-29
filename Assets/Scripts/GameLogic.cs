@@ -10,7 +10,6 @@ public class GameLogic : MonoBehaviour
 
     public static GameLogic Singleton
     {
-
         get => _singleton;
         private set
         {

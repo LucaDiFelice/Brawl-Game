@@ -1,18 +1,35 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+
+public enum WeaponType : byte
+{
+    none,
+    pistol,
+    teleporter,
+    laser
+}
 
 public class WeaponManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private GameObject weaponModels;
+
+    [SerializeField] private GameObject pistolModel;
+    [SerializeField] private AudioSource pistolAudioSource;
+    [SerializeField] private Animator pistolMuzzleFlash;
+
+    [SerializeField] private GameObject teleporterModel;
+    [SerializeField] private AudioSource teleporterAudioSource;
+    [SerializeField] private Animator teleporterMuzzleFlash;
+
+    [SerializeField] private GameObject laserModel;
+    [SerializeField] private AudioSource laserAudioSource;
+    [SerializeField] private Animator laserMuzzleFlash;
+
+    private void OnValidate()
     {
-        
+        if (pistolModel != null)
+        {
+            pistolAudioSource = pistolModel.transform.parent.GetComponent<AudioSource>();
+        }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
