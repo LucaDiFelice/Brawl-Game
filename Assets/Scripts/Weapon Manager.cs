@@ -1,3 +1,5 @@
+// Client!
+
 using UnityEngine;
 
 public enum WeaponType : byte

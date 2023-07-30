@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+// Client
 using UnityEngine;
 
 public class CameraController : MonoBehaviour
